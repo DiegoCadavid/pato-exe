@@ -1,5 +1,8 @@
 import type { Config } from 'tailwindcss'
 
+
+// TODO Agregar animaciones en la entrada de ventanas y iconos
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -13,6 +16,9 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontSize: {
+        xs: "0.8rem"
+      }
     },
   },
   plugins: [],
