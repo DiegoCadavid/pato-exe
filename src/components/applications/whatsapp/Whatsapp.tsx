@@ -1,10 +1,15 @@
 import Window from "@/components/window/Window";
+import { WindowProps } from "@/types";
 
-interface Props {}
+interface Props extends WindowProps {} 
 
-const Whatsapp = ({}: Props) => {
+const Whatsapp = ({
+  title,
+  index,
+  lastPos
+}: Props) => {
   return (
-    <Window title="Whatsapp desktop">
+    <Window title={title}  index={index} lastPos={lastPos}>
       <div className="flex h-full text-zinc-300">
         {/* Left side */}
         <div className="fex-shrink-0 w-[250px] bg-slate-800 border-r border-slate-700 ">

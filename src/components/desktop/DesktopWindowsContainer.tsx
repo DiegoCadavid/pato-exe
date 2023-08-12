@@ -10,8 +10,8 @@ const DesktopWindowsContainer = ({}: Props) => {
 
   return (
     <>
-      {desktopCtx.appsActive.map(({ Window, title, initialSize }) =>{
-        return <Window title={title} size={initialSize}  />
+      {desktopCtx.appsActive.map(({ Window, title, initialSize, index, lastPos}) =>{
+        return <Window key={title} title={title} size={initialSize} index={index} lastPos={lastPos} />
       }) }
     </>
   )

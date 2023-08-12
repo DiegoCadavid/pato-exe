@@ -1,18 +1,22 @@
 import { createContext } from "react";
-import { type App, type AppActive } from "@/types";
+import { Vector, type App, type AppActive } from "@/types";
 
 export interface DesktopContext {
   apps: App[];
   appsActive: AppActive[];
 
-  openApp: (title: string) => void; 
+  openApp: (title: string, lastPos?: Vector<number>) => void; 
+  hiddenApp: (title: string) => void;
+  closeApp: (title: string) => void;
 
 }
 
 const desktopContext = createContext<DesktopContext>({
   apps: [],
   appsActive: [],
-  openApp: () => {}
+  openApp: () => {},
+  hiddenApp: () => {},
+  closeApp: () => {}
 });
 
 export default desktopContext;

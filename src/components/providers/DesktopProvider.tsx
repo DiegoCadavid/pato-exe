@@ -1,20 +1,19 @@
 "use client";
 import { useState } from "react";
-
 import desktopContext from "@/contexts/desktopContext";
 
-import { AppActive, type App } from "@/types";
+import { type AppActive, type App, type Vector } from "@/types";
+import { WIN_INITIAL_POS, WIN_OFFSET_POS } from "@/utils/constants";
 
 import Whatsapp from "../applications/whatsapp/Whatsapp";
 import Notes from "../applications/notes/Notes";
 import Vscode from "../applications/vscode/Vscode";
 import Terminal from "../applications/terminal/Terminal";
+import existApp from "@/helpers/existApp";
 
 interface Props {
   children: React.ReactNode;
 }
-
-const apps = [];
 
 const DesktopProvider = ({ children }: Props) => {
   const [apps, setApps] = useState<App[]>([
@@ -39,28 +38,63 @@ const DesktopProvider = ({ children }: Props) => {
 
   const [appsActive, setAppsActive] = useState<AppActive[]>([]);
 
-  /*
-  TODO  | Cuando se da click a una aplicacion que ya esta abierta se le debe hacer focus
-  
-   */
+  const openApp = (title: string, lastPos?: Vector<number>) => {
+    if (!existApp(title, apps)) return;
 
-  const openApp = (title: string) => {
-    if (!apps.map((a) => a.title).includes(title)) return;
-    if (appsActive.map((a) => a.title).includes(title)) return;
+    const maxIndex =
+      appsActive.length > 0
+        ? Math.max(...appsActive.map((a) => a.index)) || 0
+        : 0;
 
+    // FOCUS APP
+    if (existApp(title, appsActive)) {
+      const { index, ...appData }: AppActive = appsActive.find(
+        (a) => a.title == title
+      ) as AppActive;
+
+      setAppsActive((_appsActive) => {
+        return [
+          ..._appsActive.filter((a) => a.title !== title),
+          {
+            ...appData,
+            index: maxIndex + 1,
+            lastPos: lastPos ? lastPos : appData.lastPos,
+          },
+        ];
+      });
+
+      return;
+    }
+
+    // OPEN APP
     setAppsActive((_appsActive) => {
+      const newIndex = maxIndex + 1;
       const app: AppActive = {
-        ...apps.filter((a) => a.title === title)[0],
+        ...(apps.find((a) => a.title === title) as App),
         isMinimized: false,
         isFullscreen: false,
-        index: _appsActive.length + 1,
+        index: newIndex,
+        lastPos: {
+          x: WIN_INITIAL_POS + newIndex * WIN_OFFSET_POS,
+          y: WIN_INITIAL_POS + newIndex * WIN_OFFSET_POS,
+        },
       };
 
       const data: AppActive[] = [..._appsActive, app];
-
-      console.log(data);
       return data;
     });
+  };
+
+  const closeApp = (title: string) => {
+    if (!existApp(title, appsActive)) return;
+    setAppsActive(appsActive.filter((a) => a.title !== title));
+  };
+
+  const hiddenApp = (title: string) => {
+    if (!existApp(title, appsActive)) return;
+
+
+    console.log(title);
   };
 
   return (
@@ -68,7 +102,9 @@ const DesktopProvider = ({ children }: Props) => {
       value={{
         apps,
         appsActive,
+        hiddenApp,
         openApp,
+        closeApp,
       }}>
       {children}
     </desktopContext.Provider>

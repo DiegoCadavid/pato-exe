@@ -14,7 +14,7 @@ const checkWinDirMove = (
 const checkWinMove = (
   delta: Vector<number>,
   win: HTMLDivElement
-): Vector<boolean> => { 
+): Vector<boolean> => {
   return {
     x: checkWinDirMove(delta.x, win.offsetLeft, win.clientWidth,  (win.parentElement?.clientWidth || document.body.clientWidth)),
     y: checkWinDirMove(delta.y, win.offsetTop, win.clientHeight, (win.parentElement?.clientHeight || document.body.clientHeight))

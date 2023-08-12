@@ -11,6 +11,8 @@ const Desktop = ({}: Props) => {
     <div className="relative flex flex-grow flex-col items-start overflow-hidden p-4 gap-2">
       <DesktopIconsContainer />
       <DesktopWindowsContainer />
+
+      {/* <Dialogues /> */}
     </div>
   );
 };

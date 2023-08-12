@@ -1,21 +1,37 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import desktopContext from "@/contexts/desktopContext";
 
 interface Props {}
 
 const BarApps = ({}: Props) => {
   const desktopCtx = useContext(desktopContext);
-  console.log(desktopCtx)
-  
-  return (
-    <div className="flex gap-4">
-      {desktopCtx.appsActive.map((app) => {
-        return <div key={app.title} className="w-8 h-8 bg-red-200 rounded-lg"></div> 
-      })}
-    </div>
-  )
-}
 
-export default BarApps
+  return (
+    <div className="flex gap-4 items-center">
+      {desktopCtx.appsActive
+        .sort((a, b) => {
+          return a.title > b.title ? 1 : -1;
+        })
+        .map((app) => {
+          return (
+            <button
+              key={app.title}
+              className="relative flex h-6 w-6 items-center justify-center rounded-lg bg-blue-500"
+              onClick={() => {
+                desktopCtx.openApp(app.title);
+              }}>
+              {app.title[0].toUpperCase()}
+
+              {Math.max(...desktopCtx.appsActive.map(a => a.index)) === app.index && (
+                <div className="absolute -bottom-2 h-1 w-2 rounded-full bg-zinc-100/70" />
+              )}
+            </button>
+          );
+        })}
+    </div>
+  );
+};
+
+export default BarApps;

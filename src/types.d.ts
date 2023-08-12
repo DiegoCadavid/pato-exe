@@ -12,6 +12,7 @@ export interface WindowProps {
   index?: number;
   title: string;
   children?: React.ReactNode;
+  lastPos?: Vector<number>
 }
 
 
@@ -27,4 +28,5 @@ export interface AppActive extends App {
   isMinimized: boolean;
   isFullscreen:boolean;
   index: number;
+  lastPos?: Vector<number>
 }
