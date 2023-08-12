@@ -48,7 +48,7 @@ const DesktopProvider = ({ children }: Props) => {
 
     // FOCUS APP
     if (existApp(title, appsActive)) {
-      const { index, ...appData }: AppActive = appsActive.find(
+      const { index, isMinimized, ...appData }: AppActive = appsActive.find(
         (a) => a.title == title
       ) as AppActive;
 
@@ -57,6 +57,7 @@ const DesktopProvider = ({ children }: Props) => {
           ..._appsActive.filter((a) => a.title !== title),
           {
             ...appData,
+            isMinimized: false,
             index: maxIndex + 1,
             lastPos: lastPos ? lastPos : appData.lastPos,
           },
@@ -93,8 +94,39 @@ const DesktopProvider = ({ children }: Props) => {
   const hiddenApp = (title: string) => {
     if (!existApp(title, appsActive)) return;
 
+    const { isMinimized, index, ...data } = appsActive.find(
+      (a) => a.title === title
+    ) as AppActive;
 
-    console.log(title);
+    setAppsActive([
+      ...appsActive.filter((a) => a.title !== title),
+      { isMinimized: true, index: 0, ...data },
+    ]);
+  };
+
+  const toggleFullscreen = (title: string, lastPos?: Vector<number>) => {
+    if (!existApp(title, appsActive)) return;
+
+    const maxIndex =
+      appsActive.length > 0
+        ? Math.max(...appsActive.map((a) => a.index)) || 0
+        : 0;
+
+    const { index,  isFullscreen: _isFullscreen ,...appData }: AppActive = appsActive.find(
+      (a) => a.title == title
+    ) as AppActive;
+
+    setAppsActive((_appsActive) => {
+      return [
+        ..._appsActive.filter((a) => a.title !== title),
+        {
+          ...appData,
+          isFullscreen: !_isFullscreen,
+          index: maxIndex + 1,
+          lastPos: lastPos ? lastPos : appData.lastPos,
+        },
+      ];
+    });
   };
 
   return (
@@ -102,6 +134,7 @@ const DesktopProvider = ({ children }: Props) => {
       value={{
         apps,
         appsActive,
+        toggleFullscreen,
         hiddenApp,
         openApp,
         closeApp,

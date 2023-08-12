@@ -3,9 +3,10 @@ import { WindowProps } from "@/types";
 
 interface Props extends WindowProps {}
 
-const Vscode = ({ title, index, lastPos }: Props) => {
+const Vscode = (props: Props) => {
+
   return (
-    <Window size={1000} title={title} index={index} lastPos={lastPos}>
+    <Window {...props}>
       <div className="flex h-full bg-zinc-900">
         <div className="flex w-12 flex-col items-center justify-between bg-zinc-800 py-4 text-zinc-500">
           <div className="flex flex-col gap-2">

@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <DesktopProvider>
-          <div className="flex min-h-screen flex-col bg-[url(/images/wallpaper.jpg)] bg-cover bg-no-repeat">
+          <div className="flex min-h-screen flex-col bg-[url(/images/wallpaper.jpg)] bg-cover bg-center bg-no-repeat">
             {children}
             <Bar />
           </div>

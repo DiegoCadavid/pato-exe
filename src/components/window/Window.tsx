@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useContext, type MouseEventHandler } from "react";
+import { useRef, useContext , type MouseEventHandler } from "react";
 import {
   WIN_OFFSET_POS as OFFSET_POS,
   WIN_INITIAL_POS as INITIAL_POS,
+  WIN_BASE_ZINDEX as BASE_ZINDEX,
 } from "@/utils/constants";
 
 import desktopContext from "@/contexts/desktopContext";
@@ -16,15 +17,17 @@ const Window = ({
   title,
   children,
   lastPos,
+  isMinimized,
+  isFullscreen,
 }: WindowProps) => {
   /*
     q: ¿Porque no uso useState's para el funcionamiento del drag?
     r: Primero no queria re-renderizar el componente cada que 
-    movia el mouse o se realizaba otro evento ya que esto consume mucho
-    rendimiento (imaginate calcular el virtual-dom por cada que mueves el 
-    mouse 💀), ademas hago muchos calculos sincronicos cada que se mueve 
-    el mouse y el hook useState cuando se actualiza el estado funciona de
-    manera asincronica a diferencia de useRef (https://stackoverflow.com/a/72343589/16523647).
+    movia el mouse  ya que esto consume mucho rendimiento (imaginate calcular
+    el virtual-dom por cada que mueves el  mouse 💀), ademas hago muchos
+    calculos sincronicos cada que se mueve el mouse y el hook useState 
+    cuando se actualiza el estado funciona de manera asincronica a diferencia 
+    de useRef (https://stackoverflow.com/a/72343589/16523647).
   */
 
   const windowRef = useRef<null | HTMLDivElement>(null);
@@ -33,10 +36,14 @@ const Window = ({
     y: INITIAL_POS + index * OFFSET_POS,
   });
 
+
   const desktopCtx = useContext(desktopContext);
+
 
   // EVENTS
   const handleMouseDown: MouseEventHandler = (e) => {
+    if (isFullscreen) return;
+
     initialRef.current = {
       x: e.clientX,
       y: e.clientY,
@@ -46,7 +53,6 @@ const Window = ({
     document.addEventListener("mousemove", handleMouseMove);
 
     const windowsElm = windowRef.current;
-
     windowsElm?.classList.add("draggable");
     desktopCtx.openApp(
       title,
@@ -91,14 +97,25 @@ const Window = ({
 
   return (
     <div
-      className="absolute flex aspect-video flex-col overflow-hidden rounded-2xl border border-zinc-700 bg-zinc-800"
+      className={`absolute flex  aspect-video flex-col overflow-hidden  border-zinc-700 bg-zinc-800  ease-out transition-window duration-300  animate-show ${
+        isMinimized ? "opacity-0 pointer-events-none" : ""
+      }  ${!isFullscreen ? "rounded-2xl border" : ""}`}
       style={{
-        top: lastPos?.y ? lastPos.y : INITIAL_POS + index * OFFSET_POS,
-        left: lastPos?.x ? lastPos.x : INITIAL_POS + index * OFFSET_POS,
-        width: size,
+        top: !isFullscreen
+          ? lastPos?.y
+            ? lastPos.y
+            : INITIAL_POS + index * OFFSET_POS
+          : 0,
+        left: !isFullscreen
+          ? lastPos?.x
+            ? lastPos.x
+            : INITIAL_POS + index * OFFSET_POS
+          : 0,
+        width: !isFullscreen ? size : "100%",
+        height: !isFullscreen ? "auto" : "100%",
+        zIndex: BASE_ZINDEX + index,
       }}
       ref={windowRef}>
-
       <div className="flex flex-shrink-0 bg-zinc-900 text-white">
         {/* Drag trigger */}
         <div className="flex-grow py-2 px-4" onMouseDown={handleMouseDown}>
@@ -108,19 +125,65 @@ const Window = ({
         </div>
 
         {/* Action zone */}
-        <div className="flex items-center gap-2">
-          <span className="inline-block h-3 w-3 rounded-full bg-green-400"></span>
-          <span className="inline-block h-3 w-3 rounded-full bg-yellow-400"></span>
-          <button onClick={() => {
-            desktopCtx.closeApp(title)
-          }} className="text-zinc-500 hover:bg-red-500  hover:text-zinc-100 py-2 px-2">
+        <div className="flex items-center">
+          <button
+            onClick={() => {
+              desktopCtx.hiddenApp(title);
+            }}
+            className="py-2 px-2  text-zinc-500 hover:bg-zinc-800 hover:text-zinc-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="h-6 w-6">
+              className="h-5 w-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
+            </svg>
+          </button>
+
+          <button
+            onClick={() => {
+              const windowsElm = windowRef.current;
+
+              desktopCtx.toggleFullscreen(
+                title,
+                windowsElm?.offsetTop && windowsElm.offsetLeft
+                  ? {
+                      x: windowsElm?.offsetLeft,
+                      y: windowsElm.offsetTop,
+                    }
+                  : undefined
+              );
+            }}
+            className="py-2 px-2  text-zinc-500 hover:bg-zinc-800 hover:text-zinc-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-5 w-5">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z"
+              />
+            </svg>
+          </button>
+
+          <button
+            onClick={() => {
+              desktopCtx.closeApp(title);
+            }}
+            className="py-2 px-2  text-zinc-500 hover:bg-red-500 hover:text-zinc-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-5 w-5">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -131,18 +194,24 @@ const Window = ({
         </div>
       </div>
 
-      <div onClick={() => {
-        const windowsElm = windowRef.current;
-        desktopCtx.openApp(
-          title,
-          windowsElm?.offsetTop && windowsElm.offsetLeft
-            ? {
-                x: windowsElm?.offsetLeft,
-                y: windowsElm.offsetTop,
-              }
-            : undefined
-        );
-      }} className="flex-grow" >{children}</div>
+      {/* Window Content */}
+      <div
+        onClick={() => {
+          const windowsElm = windowRef.current;
+
+          desktopCtx.openApp(
+            title,
+            windowsElm?.offsetTop && windowsElm.offsetLeft
+              ? {
+                  x: windowsElm?.offsetLeft,
+                  y: windowsElm.offsetTop,
+                }
+              : undefined
+          );
+        }}
+        className="flex-grow">
+        {children}
+      </div>
     </div>
   );
 };

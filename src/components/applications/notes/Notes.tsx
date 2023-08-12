@@ -3,9 +3,9 @@ import { WindowProps } from "@/types";
 
 interface Props extends WindowProps {}
 
-const Notes = ({title, index, lastPos}: Props) => {
+const Notes = (props: Props) => {
   return (
-    <Window title={title} size={600} index={index} lastPos={lastPos}>
+    <Window {...props}>
       <div className="bg-zinc-900 h-full text-zinc-300 flex flex-col">
         <div className="flex border-b border-zinc-700 bg-zinc-900 pl-8 items-center gap-2">
           <div className="translate-y-0.5 rounded-t-lg border border-zinc-700 border-b-zinc-800  bg-zinc-800 py-2 text-sm px-4 ">

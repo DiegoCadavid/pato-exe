@@ -11,6 +11,7 @@
 
 @layer utilities {
   .draggable {
-    @apply shadow-lg ;
+    @apply shadow-lg shadow-zinc-900/20;
+    transition: none !important;
   }
 }

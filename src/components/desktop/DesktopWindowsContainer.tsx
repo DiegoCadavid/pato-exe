@@ -10,11 +10,18 @@ const DesktopWindowsContainer = ({}: Props) => {
 
   return (
     <>
-      {desktopCtx.appsActive.map(({ Window, title, initialSize, index, lastPos}) =>{
-        return <Window key={title} title={title} size={initialSize} index={index} lastPos={lastPos} />
-      }) }
+      {desktopCtx.appsActive.map(
+        ({ Window, ...windowsProps }) => {
+          return (
+            <Window
+              key={windowsProps.title}
+              {...windowsProps}
+            />
+          );
+        }
+      )}
     </>
-  )
-}
+  );
+};
 
-export default DesktopWindowsContainer
+export default DesktopWindowsContainer;

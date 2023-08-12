@@ -8,7 +8,7 @@ export interface DesktopContext {
   openApp: (title: string, lastPos?: Vector<number>) => void; 
   hiddenApp: (title: string) => void;
   closeApp: (title: string) => void;
-
+  toggleFullscreen: (title: string, lastPos?: Vector<number>) => void;
 }
 
 const desktopContext = createContext<DesktopContext>({
@@ -16,7 +16,8 @@ const desktopContext = createContext<DesktopContext>({
   appsActive: [],
   openApp: () => {},
   hiddenApp: () => {},
-  closeApp: () => {}
+  closeApp: () => {},
+  toggleFullscreen: () => {}
 });
 
 export default desktopContext;

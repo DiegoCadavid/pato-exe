@@ -3,13 +3,9 @@ import { WindowProps } from "@/types";
 
 interface Props extends WindowProps {} 
 
-const Whatsapp = ({
-  title,
-  index,
-  lastPos
-}: Props) => {
+const Whatsapp = (props: Props) => {
   return (
-    <Window title={title}  index={index} lastPos={lastPos}>
+    <Window {...props}>
       <div className="flex h-full text-zinc-300">
         {/* Left side */}
         <div className="fex-shrink-0 w-[250px] bg-slate-800 border-r border-slate-700 ">

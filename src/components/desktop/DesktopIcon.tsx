@@ -20,7 +20,7 @@ const DesktopIcon = ({ title }: Props) => {
       onClick={handleClick}
       className="flex aspect-square h-20 w-20 flex-col items-center justify-center  rounded-lg text-center hover:bg-zinc-100/20">
       <div className="h-12 w-12 rounded-lg bg-zinc-100"></div>
-      <p className="mt-1 w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm  leading-none text-white">
+      <p className="mt-1 w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm drop-shadow-[0_0_1.2px_rgba(0,0,0,0.8)] leading-none text-white">
         {title}
       </p>
     </button>

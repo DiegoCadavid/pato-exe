@@ -13,6 +13,8 @@ export interface WindowProps {
   title: string;
   children?: React.ReactNode;
   lastPos?: Vector<number>
+  isMinimized?: boolean;
+  isFullscreen?: boolean;
 }
 
 
