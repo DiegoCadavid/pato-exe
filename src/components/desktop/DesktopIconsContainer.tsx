@@ -12,7 +12,7 @@ const DesktopIconsContainer = ({}: Props) => {
   return (
     <>
       {desktopCtx.apps.map((app) => {
-        return <DesktopIcon  key={app.title} title={app.title} />;
+        return <DesktopIcon  key={app.title} title={app.title} icon={app.icon || ""} />;
       })}
     </>
   );

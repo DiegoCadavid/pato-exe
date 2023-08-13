@@ -42,9 +42,7 @@ const BarApps = ({}: Props) => {
                   return desktopCtx.openApp(app.title);
                 }
               }}>
-              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-blue-500 text-sm group-active:scale-75 ">
-                {app.title[0].toUpperCase()}
-              </div>
+                <img src={app.icon} alt="app icon" className="w-7 h-7 flex-shrink-0 group-active:scale-90 object-contain object-center" />
             </button>
           );
         })}

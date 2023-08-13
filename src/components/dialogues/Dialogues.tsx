@@ -15,8 +15,8 @@ const Dialogues = ({}: Props) => {
 
       <div className="flex gap-2 justify-center mt-2">
         <button className="px-4 py-2 bg-zinc-800/80 backdrop-blur-lg rounded-2xl text-zinc-300 border border-zinc-600">...</button>
-        <button className="px-4 py-2 bg-zinc-800/80 backdrop-blur-lg rounded-2xl text-zinc-300 border border-zinc-600">¿Quien eres?</button>
-        <button className="px-4 py-2 bg-zinc-800/80 backdrop-blur-lg rounded-2xl text-zinc-300 border border-zinc-600">asdoñnj</button>
+        <button className="px-4 py-2 bg-zinc-800/80 backdrop-blur-lg rounded-2xl text-zinc-300 border border-zinc-600">¿que eres?</button>
+        <button className="px-4 py-2 bg-zinc-800/80 backdrop-blur-lg rounded-2xl text-zinc-300 border border-zinc-600">LÑSIAB 💢💢</button>
 
       </div>
     </div>

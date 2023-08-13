@@ -4,7 +4,6 @@ import { useRef, useContext , type MouseEventHandler } from "react";
 import {
   WIN_OFFSET_POS as OFFSET_POS,
   WIN_INITIAL_POS as INITIAL_POS,
-  WIN_BASE_ZINDEX as BASE_ZINDEX,
 } from "@/utils/constants";
 
 import desktopContext from "@/contexts/desktopContext";
@@ -20,6 +19,7 @@ const Window = ({
   isMinimized,
   isFullscreen,
 }: WindowProps) => {
+
   /*
     q: ¿Porque no uso useState's para el funcionamiento del drag?
     r: Primero no queria re-renderizar el componente cada que 
@@ -113,7 +113,7 @@ const Window = ({
           : 0,
         width: !isFullscreen ? size : "100%",
         height: !isFullscreen ? "auto" : "100%",
-        zIndex: BASE_ZINDEX + index,
+        zIndex: index,
       }}
       ref={windowRef}>
       <div className="flex flex-shrink-0 bg-zinc-900 text-white">
