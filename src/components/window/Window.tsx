@@ -97,7 +97,7 @@ const Window = ({
 
   return (
     <div
-      className={`absolute flex  aspect-video flex-col overflow-hidden  border-zinc-700 bg-zinc-800  ease-out transition-window duration-300  animate-show ${
+      className={`absolute flex  aspect-video flex-col overflow-hidden  border-zinc-700 bg-zinc-800  ease-out transition-window duration-300  ${
         isMinimized ? "opacity-0 pointer-events-none" : ""
       }  ${!isFullscreen ? "rounded-2xl border" : ""}`}
       style={{

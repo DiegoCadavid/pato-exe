@@ -35,7 +35,7 @@ const config: Config = {
         show: {
           "0%": {
             opacity: "0",
-            transform: "scale(0.8)"
+            transform: "scale(0.9)"
           },
           "100%": {
             opacity: "1",

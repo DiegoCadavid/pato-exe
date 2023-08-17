@@ -3,7 +3,12 @@ import { useState } from "react";
 import desktopContext from "@/contexts/desktopContext";
 
 import { type AppActive, type App, type Vector } from "@/types";
-import { WIN_INITIAL_POS, WIN_OFFSET_POS, WIN_PLUS_INDEX, WIN_BASE_INDEX } from "@/utils/constants";
+import {
+  WIN_INITIAL_POS,
+  WIN_OFFSET_POS,
+  WIN_PLUS_INDEX,
+  WIN_BASE_INDEX,
+} from "@/utils/constants";
 
 import Whatsapp from "../applications/whatsapp/Whatsapp";
 import Notes from "../applications/notes/Notes";
@@ -21,17 +26,17 @@ const DesktopProvider = ({ children }: Props) => {
     {
       title: "Whatsapp",
       Window: Whatsapp,
-      icon: "/images/icons/whatsapp.png"
+      icon: "/images/icons/whatsapp.png",
     },
     {
       title: "Notes",
       Window: Notes,
-      icon: "/images/icons/notes.png"
+      icon: "/images/icons/notes.png",
     },
     {
       title: "vs code",
       Window: Vscode,
-      icon: "/images/icons/vscode.png"
+      icon: "/images/icons/vscode.png",
     },
     {
       title: "Terminal",
@@ -85,7 +90,6 @@ const DesktopProvider = ({ children }: Props) => {
 
       const data: AppActive[] = [..._appsActive, app];
 
-      console.log(data);
       return data;
     });
   };
@@ -113,9 +117,11 @@ const DesktopProvider = ({ children }: Props) => {
 
     const maxIndex = getMaxIndex(appsActive);
 
-    const { index,  isFullscreen: _isFullscreen ,...appData }: AppActive = appsActive.find(
-      (a) => a.title == title
-    ) as AppActive;
+    const {
+      index,
+      isFullscreen: _isFullscreen,
+      ...appData
+    }: AppActive = appsActive.find((a) => a.title == title) as AppActive;
 
     setAppsActive((_appsActive) => {
       return [
